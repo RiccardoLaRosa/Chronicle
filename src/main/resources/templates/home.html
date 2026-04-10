@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+<head th:insert="~{index :: head}"></head>
+
+<body>
+    
+    <!-- HEAD NAVBAR -->
+    <head th:insert="~{index :: navbar}"></head>
+
+    <main>
+        <!-- contenuto della pagina -->
+    </main>
+
+    <!-- HEAD FOOTER -->
+    <head th:insert="~{index :: footer}"></head>
+
+    <!-- SCRIPT BOOTSTRAP -->
+     <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>
