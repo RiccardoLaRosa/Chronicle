@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:replace="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+    <div th:replace="~{index :: navbar}"></div>
+
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+        <div class="card border-0 shadow-sm p-5" style="width:100%; max-width:420px; border-radius:16px;">
+
+            <!-- Logo -->
+            <a href="/" class="text-decoration-none text-center d-block mb-1 fw-bold fs-5"
+                style="color:#2e7d5a; letter-spacing:1px;">CHRONICLE</a>
+
+            <!-- Sottotitolo -->
+            <p class="text-center text-muted mb-4" style="font-size:13px;">Bentornato! Accedi al tuo account</p>
+
+            <!-- Form -->
+            <form th:action="@{/login}" method="post" role="form">
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label small fw-medium">Email</label>
+                    <input type="text" name="username" class="form-control" placeholder="mario@email.com" required>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label class="form-label small fw-medium">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="La tua password" required>
+                    <div class="text-end mt-1">
+                        <a href="#" class="text-decoration-none small" style="color:#2e7d5a;">
+                            Password dimenticata?
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Bottone -->
+                <button type="submit" class="btn w-100 fw-medium py-2 rounded-pill text-white mt-2"
+                    style="background-color:#2e7d5a;">
+                    Accedi
+                </button>
+
+            </form>
+
+            <!-- Divisore -->
+            <div class="text-center text-muted my-3" style="font-size:12px;">oppure</div>
+
+            <!-- Link registrazione -->
+            <p class="text-center text-muted mb-0" style="font-size:13px;">
+                Non hai un account?
+                <a href="/register" class="text-decoration-none fw-medium" style="color:#2e7d5a;">Registrati</a>
+            </p>
+
+        </div>
+
+    </main>
+
+    <!-- HEAD FOOTER -->
+    <div th:replace="~{index :: footer}"></div>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>

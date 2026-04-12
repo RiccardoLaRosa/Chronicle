@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+<head th:replace="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+    <div th:replace="~{index :: navbar}"></div>
+
+    <main>
+        <div class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+
+            <div class="card border-0 shadow-sm p-5" style="width:100%; max-width:480px; border-radius:16px;">
+
+                <!-- Logo -->
+                <a href="/" class="text-decoration-none text-center d-block mb-1 fw-bold fs-5" style="color:#2e7d5a; letter-spacing:1px;">CHRONICLE</a>
+
+                <!-- Sottotitolo -->
+                <p class="text-center text-muted mb-4" style="font-size:13px;">Crea il tuo account gratuito</p>
+
+                <!-- Messaggio di Successo -->
+                <div th:if="${param.success}" class="alert alert-success text-center" role="alert">Registrazione avvenuta con successo!</div>
+
+                <!-- Form -->
+                <form th:action="@{/register/save}" method="post" role="form" th:object="${user}">
+
+                    <!-- Nome e Cognome -->
+                    <div class="row g-3 mb-3">
+                        <div class="col">
+                            <label class="form-label small fw-medium">Nome</label>
+                            <input class="form-control" placeholder="Mario" th:field="*{firstName}" required>
+                            <!-- Messaggio di errore -->
+                            <p th:errors = "*{firstName}" class="text-danger"></p>
+                        </div>
+                        
+                        <div class="col">
+                            <label class="form-label small fw-medium">Cognome</label>
+                            <input class="form-control" placeholder="Rossi" th:field="*{lastName}" required>
+                            <!-- Messaggio di errore -->
+                            <p th:errors = "*{lastName}" class="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Email</label>
+                        <input class="form-control" placeholder="mario@email.com"  th:field="*{email}" required>
+                        <!-- Messaggio di errore -->
+                        <p th:errors = "*{email}" class="text-danger"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">Password</label>
+                        <input class="form-control" placeholder="Almeno 8 caratteri" th:field="*{password}" required>
+                        <!-- Messaggio di errore -->
+                        <p th:errors = "*{password}" class="text-danger"></p>
+                    </div>
+
+
+                    <!-- Bottone -->
+                    <button type="submit" class="btn w-100 fw-medium py-2 rounded-pill text-white" style="background-color: var(--primary);">
+                        Crea account
+                    </button>
+
+                </form>
+
+                <!-- Divisore -->
+                <div class="text-center text-muted my-3" style="font-size:12px;">oppure</div>
+
+                <!-- Link login -->
+                <p class="text-center text-muted mb-3" style="font-size:13px;">Hai già un account?<a href="/login" style="color:#2e7d5a;" class="text-decoration-none fw-medium">Accedi</a></p>
+
+                <!-- Termini -->
+                <p class="text-center text-muted mb-0" style="font-size:12px; line-height:1.6;">Registrandoti accetti i nostri
+                    <a href="#" style="color:#2e7d5a;" class="text-decoration-none">Termini di servizio</a>
+                    e la
+                    <a href="#" style="color:#2e7d5a;" class="text-decoration-none">Privacy Policy</a>.
+                </p>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- HEAD FOOTER -->
+    <div th:replace="~{index :: footer}"></div>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>
