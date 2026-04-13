@@ -3,6 +3,8 @@ package it.aulab.chronicle.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,4 +50,8 @@ public class User {
         joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName="ID")},
         inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName="ID")})
     private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    private List<Article> articles= new ArrayList<>();
 }
