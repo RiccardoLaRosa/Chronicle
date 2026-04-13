@@ -9,7 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <!-- CSS -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
@@ -26,42 +30,51 @@
     <div th:fragment="navbar">
 
         <!-- Inizio Navbar -->
-        <nav class="navbar">
-            <div class="nav-left">
-                <a href="/home" class="nav-link">Home</a>
-                <a href="/explore" class="nav-link">Esplora</a>
-            </div>
+        <nav class="navbar bg-white border-bottom py-3">
+            <div class="container position-relative d-flex align-items-center justify-content-between">
 
-            <a href="/" class="logo">CHRONICLE</a>
-
-            <div class="nav-right">
-
-                <!-- Icona Ricerca -->
-                <a href="#search" class="search-icon">🔍</a>
-
-                <!-- Non loggato -->
-                <div class="logged-out">
-                    <a href="/login" class="nav-link">Login</a>
-                    <a href="/register" class="btn-outline">Registrati</a>
+                <!-- SINISTRA -->
+                <div class="d-flex align-items-center gap-4">
+                    <a href="/home" class="nav-link-custom fw-semibold fs-6">Home</a>
+                    <a href="/explore" class="nav-link-custom fw-semibold fs-6">Esplora</a>
+                    <a href="/write" class="btn btn-main btn-sm">Scrivi</a>
                 </div>
 
-                <!-- Loggato -->
-                <div class="logged-in">
-                    <a href="/write" class="btn-primary">Scrivi</a>
-                    <a href="/profile" class="nav-link">Profilo</a>
-                    <a href="/logout" class="nav-link">Logout</a>
-                </div>
+                <!-- LOGO CENTRATO -->
+                <a href="/" class="position-absolute top-50 start-50 translate-middle logo-custom me-4">CHRONICLE</a>
 
+                <!-- DESTRA -->
+                <div class="d-flex align-items-center gap-2">
+
+                    <!-- NON LOGGATO -->
+                    <div class="d-flex align-items-center gap-2" sec:authorize="isAnonymous">
+                        <a th:href="@{/login}" class="nav-link-custom fw-semibold fs-6">Login</a>
+                        <a th:href="@{/register}" class="btn btn-main">Registrati</a>
+                    </div>
+
+                    <!-- LOGGATO -->
+                    <div class="d-flex align-items-center gap-3" sec:authorize="isAuthenticated">
+
+                        <div th:text="'Benvenuto: '+ ${#authentication.principal.fullname} + ' - '+ ${#authentication.principal.authorities[0].authority.replace('ROLE_','')}" class="fw-semibold fs-6 border-end pe-2">Benvenuto</div>
+                        <a href="/profile" class="nav-link-custom fw-semibold fs-6">Profilo</a>
+                        <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">Logout</a>
+
+                    </div>
+
+                    <!-- Search -->
+                    <button class="btn btn-light btn-search-custom" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Cerca"><i class="bi bi-search fw-bold"></i></button>
+
+                </div>
             </div>
         </nav>
         <!-- Fine Navbar -->
 
         <!-- Overlay Ricerca -->
-        <div id="search" class="search-overlay">
-            <a href="#" style="position:absolute;width:100%;height:100%;"></a>
-
-            <div class="search-box">
-                <input type="text" placeholder="Cerca articoli, utenti, tag...">
+        <div class="modal fade" id="searchModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-3 ra">
+                    <input type="text" class="form-control form-control-lg w-100" placeholder="Cerca articoli, utenti, tag..." autofocus>
+                </div>
             </div>
         </div>
         <!-- Fine Overlay di Ricerca -->
@@ -76,15 +89,15 @@
 
                 <!-- Brand -->
                 <div class="col-md-4 mb-4 mb-md-0">
-                    <a href="/" class="text-decoration-none fw-bold fs-5 letter-spacing-1" style="color: var(--primary);">CHRONICLE</a>
+                    <a href="/" class="text-decoration-none fw-bold fs-5 letter-spacing-1"
+                        style="color: var(--primary);">CHRONICLE</a>
                     <p class="text-muted mt-2" style="font-size: 13px;">Il tuo spazio per leggere, scrivere e
                         condividere storie.</p>
                 </div>
 
                 <!-- Esplora -->
                 <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h6 class="text-uppercase text-muted fw-semibold mb-3"
-                        style="font-size: 11px; letter-spacing: 1px;">Esplora</h6>
+                    <h6 class="text-uppercase text-muted fw-semibold mb-3" style="font-size: 11px; letter-spacing: 1px;">Esplora</h6>
                     <a href="/explore" class="d-block text-decoration-none text-dark mb-2 small">Articoli</a>
                     <a href="/tags" class="d-block text-decoration-none text-dark mb-2 small">Tag</a>
                     <a href="/authors" class="d-block text-decoration-none text-dark mb-2 small">Autori</a>
@@ -120,18 +133,6 @@
 
         </div>
     </footer>
-
-
-
-
-
-
-
-
-
-
-
-
 
     <!-- Fragment Bootstrap Script -->
     <script th:fragment="bootstrapScript"
