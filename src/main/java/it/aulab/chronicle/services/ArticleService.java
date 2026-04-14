@@ -1,6 +1,7 @@
 package it.aulab.chronicle.services;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -33,7 +34,11 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
 
     @Override
     public List<ArticleDto> readAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<ArticleDto> dtos = new ArrayList<>();
+        for(Article article : articleRepository.findAll()) {
+            dtos.add(modelMapper.map(article, ArticleDto.class));
+        }
+        return dtos;
     }
 
     @Override

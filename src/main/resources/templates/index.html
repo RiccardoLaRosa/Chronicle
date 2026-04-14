@@ -35,8 +35,8 @@
 
                 <!-- SINISTRA -->
                 <div class="d-flex align-items-center gap-4">
-                    <a href="/home" class="nav-link-custom fw-semibold fs-6">Home</a>
-                    <a href="/explore" class="nav-link-custom fw-semibold fs-6">Esplora</a>
+                    <a th:href="@{/}" class="nav-link-custom fw-semibold fs-6">Home</a>
+                    <a th:href="@{/articles/index}" class="nav-link-custom fw-semibold fs-6">Esplora</a>
                     <a th:href="@{/articles/create}" class="btn btn-main btn-sm" sec:authorize="isAuthenticated">Scrivi</a>
                 </div>
 

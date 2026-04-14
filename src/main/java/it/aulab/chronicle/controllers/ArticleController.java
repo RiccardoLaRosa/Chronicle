@@ -1,6 +1,9 @@
 package it.aulab.chronicle.controllers;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.aulab.chronicle.dtos.ArticleDto;
 import it.aulab.chronicle.models.Article;
 import it.aulab.chronicle.services.ArticleService;
 import it.aulab.chronicle.services.CategoryService;
@@ -31,6 +35,20 @@ public class ArticleController {
     @Autowired
     CategoryService categoryService;
     
+    /* Rotta Index degli articoli */
+    @GetMapping("index")
+    public String articlesIndex(Model viewModel) {
+        viewModel.addAttribute("title", "Tutti gli articoli");
+        
+        List<ArticleDto> articles = articleService.readAll();
+
+        //articoli in ordine cronologico inverso
+        Collections.sort(articles, Comparator.comparing(ArticleDto::getPublishDate).reversed());
+
+        viewModel.addAttribute("articles", articles);
+
+        return "article/articles";
+    }
 
     /* Rotta per la creazione di un articolo */
     @GetMapping("create")
@@ -40,6 +58,8 @@ public class ArticleController {
         viewModel.addAttribute("categories", categoryService.readAll());
         return "article/create";
     }
+
+    
 
     /* Rotta per lo store di un articolo */
     @PostMapping
