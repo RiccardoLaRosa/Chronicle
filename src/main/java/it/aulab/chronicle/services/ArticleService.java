@@ -2,6 +2,7 @@ package it.aulab.chronicle.services;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     @Override
     public List<ArticleDto> readAll() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -40,6 +44,8 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
 
     @Override
     public ArticleDto create(Article article, Principal principal, MultipartFile file) {
+
+        String url = "";
         //utente loggato ORA
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -51,9 +57,23 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
             //associazione allo user
             article.setUser(user);
         }
+        
+        if (!file.isEmpty()) {
+            try {
+                CompletableFuture<String> futureUrl = imageService.saveImageOnCloud(file);
+                url = futureUrl.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         //salvataggio
         ArticleDto dto = modelMapper.map(articleRepository.save(article), ArticleDto.class);
+
+        if (!file.isEmpty()) {
+            imageService.saveImageOnDb(url, article);
+            
+        }
             
         return dto;
 
