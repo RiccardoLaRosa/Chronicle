@@ -2,7 +2,6 @@ package it.aulab.chronicle.services;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,27 +45,24 @@ public class ImageService {
         imageRepository.save(Image.builder().path(url).article(article).build());
     }
 
-    @Async
-    public CompletableFuture<String> saveImageOnCloud(MultipartFile file) throws Exception {
+    // @Async rimosso — ritorna direttamente String
+    public String saveImageOnCloud(MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
             try {
                 String nameFile = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
                 String extension = StringManipulation.getFileExtension(nameFile);
                 String url = supabaseUrl + supabaseBucket + nameFile;
 
-                MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-                body.add("file", file.getBytes());
-
                 HttpHeaders headers = new HttpHeaders();
-                headers.set("Content-Type", "image/" + extension);
-                headers.set("Authorization", "Bearer" + supabaseKey);
+                headers.set("Content-Type", "application/octet-stream");
+                headers.set("Authorization", "Bearer " + supabaseKey);
 
                 HttpEntity<byte[]> requestEntity = new HttpEntity<>(file.getBytes(), headers);
 
-                restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+                ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+                System.out.println("Supabase response: " + response.getStatusCode() + " - " + response.getBody());
 
-                return CompletableFuture.completedFuture(url);
+                return url;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -77,7 +71,7 @@ public class ImageService {
             throw new IllegalArgumentException("File is empty");
         }
 
-        return CompletableFuture.failedFuture(null);
+        return null;
     }
 
     @Async
@@ -88,17 +82,12 @@ public class ImageService {
 
         imageRepository.deleteByPath(imagePath);
 
-        RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer" + supabaseKey);
+        headers.set("Authorization", "Bearer " + supabaseKey);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
-
         System.out.println(response.getBody());
-
     }
-
 }

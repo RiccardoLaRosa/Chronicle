@@ -2,7 +2,6 @@ package it.aulab.chronicle.services;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,38 +44,26 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     @Override
     public ArticleDto create(Article article, Principal principal, MultipartFile file) {
 
-        String url = "";
-        //utente loggato ORA
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
-            //cast
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            //ricerca nel db
             User user = (userRepository.findById(userDetails.getId())).get();
-            //associazione allo user
             article.setUser(user);
         }
-        
+
+        Article savedArticle = articleRepository.save(article);
+
         if (!file.isEmpty()) {
             try {
-                CompletableFuture<String> futureUrl = imageService.saveImageOnCloud(file);
-                url = futureUrl.get();
+                String url = imageService.saveImageOnCloud(file); // rimosso CompletableFuture
+                imageService.saveImageOnDb(url, savedArticle);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        //salvataggio
-        ArticleDto dto = modelMapper.map(articleRepository.save(article), ArticleDto.class);
-
-        if (!file.isEmpty()) {
-            imageService.saveImageOnDb(url, article);
-            
-        }
-            
-        return dto;
-
+        return modelMapper.map(savedArticle, ArticleDto.class);
     }
 
     @Override
@@ -88,6 +75,4 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
     public void delete(Long key) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
 }
