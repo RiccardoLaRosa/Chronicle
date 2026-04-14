@@ -2,22 +2,99 @@
 <html lang="en" xmlns="http://www.thymeleaf.org">
 
 <!-- HEAD -->
+
 <head th:insert="~{index :: head}"></head>
 
 <body>
-    
-    <!-- HEAD NAVBAR -->
-    <head th:insert="~{index :: navbar}"></head>
 
-    <main>
-        <p>ciao</p>
+    <!-- HEAD NAVBAR -->
+
+    <div th:insert="~{index :: navbar}"></div>
+
+    <main class="bg-light">
+        <div class="container py-5">
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body p-4">
+
+                            <h2 th:text="${title}" class="text-center mb-4 fw-semibold">Inserisci Nuovo Articolo</h2>
+                            
+                            <!-- FORM CREATE -->
+                            <form th:action="@{/articles}" th:object="${article}" method="POST" enctype="multipart/form-data">
+
+                                <!-- TITLE -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" th:field="*{title}" class="form-control" placeholder="Inserisci un articolo...">
+                                    <label>Titolo</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                                </div>
+
+                                <!-- BODY -->
+                                <div class="form-floating mb-3">
+                                    <textarea th:field="*{body}" class="form-control" placeholder="Contenuto"
+                                        style="height: 150px"></textarea>
+                                    <label>Contenuto</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('body')}"
+                                        th:errors="*{body}">
+                                    </div>
+                                </div>
+
+                                <!-- DATE -->
+                                <div class="form-floating mb-3">
+                                    <input type="date" th:field="*{publishDate}" class="form-control">
+                                    <label>Data pubblicazione</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('publishDate')}"
+                                        th:errors="*{publishDate}">
+                                    </div>
+                                </div>
+
+                                <!-- CATEGORY -->
+                                <div class="form-floating mb-4">
+                                    <select th:field="*{category}" class="form-select">
+                                        <option value="">Seleziona categoria</option>
+                                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                                    </select>
+                                    <label>Categoria</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('category')}"
+                                        th:errors="*{category}">
+                                    </div>
+                                </div>
+
+                                <!-- IMAGE -->
+                                 <div class="mb-3">
+                                    <label for="image" class="form-label">Immagine</label>
+                                    <input type="file" name="file" id="image" class="form-control">
+                                 </div>
+
+                                <!-- BUTTON -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg rounded-3">Salva Articolo</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <!-- HEAD FOOTER -->
-    <head th:insert="~{index :: footer}"></head>
+
+    <div th:insert="~{index :: footer}"></div>
 
     <!-- SCRIPT BOOTSTRAP -->
-     <script th:replace="~{index :: bootstrapScript}"></script>
+    <script th:replace="~{index :: bootstrapScript}"></script>
 
 </body>
 

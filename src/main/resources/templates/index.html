@@ -37,7 +37,7 @@
                 <div class="d-flex align-items-center gap-4">
                     <a href="/home" class="nav-link-custom fw-semibold fs-6">Home</a>
                     <a href="/explore" class="nav-link-custom fw-semibold fs-6">Esplora</a>
-                    <a href="@{/articles/create}" class="btn btn-main btn-sm">Scrivi</a>
+                    <a th:href="@{/articles/create}" class="btn btn-main btn-sm" sec:authorize="isAuthenticated">Scrivi</a>
                 </div>
 
                 <!-- LOGO CENTRATO -->
@@ -55,25 +55,41 @@
                     <!-- LOGGATO -->
                     <div class="d-flex align-items-center gap-3" sec:authorize="isAuthenticated">
 
-                        <div th:text="'Benvenuto: '+ ${#authentication.principal.fullname} + ' - '+ ${#authentication.principal.authorities[0].authority.replace('ROLE_','')}" class="fw-semibold fs-6 border-end pe-2">Benvenuto</div>
+                        <div th:text="'Benvenuto: '+ ${#authentication.principal.fullname} + ' - '+ ${#authentication.principal.authorities[0].authority.replace('ROLE_','')}"
+                            class="fw-semibold fs-6 border-end pe-2">Benvenuto</div>
                         <a href="/profile" class="nav-link-custom fw-semibold fs-6">Profilo</a>
                         <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">Logout</a>
 
                     </div>
 
                     <!-- Search -->
-                    <button class="btn btn-light btn-search-custom" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Cerca"><i class="bi bi-search fw-bold"></i></button>
+                    <button class="btn btn-light btn-search-custom" data-bs-toggle="modal" data-bs-target="#searchModal"
+                        aria-label="Cerca"><i class="bi bi-search fw-bold"></i></button>
 
+                    </div>
                 </div>
+            </nav>
+            <!-- Fine Navbar -->
+
+            <!-- Messaggi -->
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span th:text="${successMessage}">Messaggio di successo</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </nav>
-        <!-- Fine Navbar -->
+
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span th:text="${errorMessage}">Messaggio di errore</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
         <!-- Overlay Ricerca -->
         <div class="modal fade" id="searchModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content p-3 ra">
-                    <input type="text" class="form-control form-control-lg w-100" placeholder="Cerca articoli, utenti, tag..." autofocus>
+                    <input type="text" class="form-control form-control-lg w-100"
+                        placeholder="Cerca articoli, utenti, tag..." autofocus>
                 </div>
             </div>
         </div>
@@ -97,7 +113,8 @@
 
                 <!-- Esplora -->
                 <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h6 class="text-uppercase text-muted fw-semibold mb-3" style="font-size: 11px; letter-spacing: 1px;">Esplora</h6>
+                    <h6 class="text-uppercase text-muted fw-semibold mb-3"
+                        style="font-size: 11px; letter-spacing: 1px;">Esplora</h6>
                     <a href="/explore" class="d-block text-decoration-none text-dark mb-2 small">Articoli</a>
                     <a href="/tags" class="d-block text-decoration-none text-dark mb-2 small">Tag</a>
                     <a href="/authors" class="d-block text-decoration-none text-dark mb-2 small">Autori</a>
@@ -105,7 +122,8 @@
 
                 <!-- Account -->
                 <div class="col-6 col-md-2 mb-4 mb-md-0">
-                    <h6 class="text-uppercase text-muted fw-semibold mb-3" style="font-size: 11px; letter-spacing: 1px;">Account</h6>
+                    <h6 class="text-uppercase text-muted fw-semibold mb-3"
+                        style="font-size: 11px; letter-spacing: 1px;">Account</h6>
                     <a href="/login" class="d-block text-decoration-none text-dark mb-2 small">Login</a>
                     <a href="/register" class="d-block text-decoration-none text-dark mb-2 small">Registrati</a>
                     <a href="/profile" class="d-block text-decoration-none text-dark mb-2 small">Profilo</a>
@@ -113,7 +131,8 @@
 
                 <!-- Seguici -->
                 <div class="col-6 col-md-2">
-                    <h6 class="text-uppercase text-muted fw-semibold mb-3" style="font-size: 11px; letter-spacing: 1px;">Seguici</h6>
+                    <h6 class="text-uppercase text-muted fw-semibold mb-3"
+                        style="font-size: 11px; letter-spacing: 1px;">Seguici</h6>
                     <a href="#" class="d-block text-decoration-none text-dark mb-2 small">Twitter</a>
                     <a href="#" class="d-block text-decoration-none text-dark mb-2 small">Instagram</a>
                     <a href="#" class="d-block text-decoration-none text-dark mb-2 small">LinkedIn</a>
