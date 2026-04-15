@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,8 @@ public class ArticleController {
     private ArticleService articleService;
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
+
     
     /* Rotta Index degli articoli */
     @GetMapping("index")
@@ -49,6 +51,15 @@ public class ArticleController {
 
         return "article/articles";
     }
+
+    @GetMapping("details/{id}")
+    public String detailArticle(@PathVariable("id") Long id, Model viewModel) {
+        viewModel.addAttribute("title", "Article details");
+        viewModel.addAttribute("article", articleService.read(id));
+
+        return "article/detail";
+    }
+    
 
     /* Rotta per la creazione di un articolo */
     @GetMapping("create")

@@ -2,22 +2,124 @@
 <html lang="en" xmlns="http://www.thymeleaf.org">
 
 <!-- HEAD -->
+
 <head th:insert="~{index :: head}"></head>
 
 <body>
-    
+
     <!-- HEAD NAVBAR -->
+
     <head th:insert="~{index :: navbar}"></head>
 
-    <main>
-        <!-- contenuto della pagina -->
+    <main class="container">
+        <!-- HERO -->
+        <section class="hero container">
+            <div class="logo mb-3">greenblog</div>
+            <h1>Contenuti freschi, idee nuove</h1>
+            <p>Esplora articoli per categoria e autore</p>
+        </section>
+
+        <!-- Ticker -->
+        <div class="ticker-wrap">
+            <div class="ticker-track" id="ticker-track">
+                <div th:each="category:${categories}">
+                    <span th:text="${category.name}"></span>
+                    <span class="dot">·</span>
+                </div>
+                <div th:each="category:${categories}">
+                    <span th:text="${category.name}"></span>
+                    <span class="dot">·</span>
+                </div>
+                <div th:each="category:${categories}">
+                    <span th:text="${category.name}"></span>
+                    <span class="dot">·</span>
+                </div>
+                <div th:each="category:${categories}">
+                    <span th:text="${category.name}"></span>
+                    <span class="dot">·</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURED -->
+        <section class="container my-5">
+            <div class="featured">
+                <h2>🔥 Post in evidenza</h2>
+                <p class="mb-3">Il meglio selezionato dagli autori</p>
+                <h4>Come l'intelligenza artificiale cambierà il lavoro</h4>
+                <p>Un'analisi completa sui prossimi 10 anni nel mondo tech.</p>
+                <span class="author">di Mario Rossi</span>
+            </div>
+        </section>
+
+        <!-- ULTIMI ARTICOLI -->
+        <section class="container my-5">
+            <h3 class="mb-4">Ultimi articoli</h3>
+
+            <div class="d-flex flex-column gap-4">
+
+                <!-- CARD -->
+                <div th:each="article:${articles}" class="post-horizontal">
+                    
+                    <img th:if="${article.image != null}" th:src="${article.image.path}" alt="Immagine articolo" >
+                    <img th:unless="${article.image != null}" src="/images/no_photo.png" alt="Immagine di default">
+
+                    <div class="post-content">
+                        <span class="badge badge-cat mb-2">Tag</span>
+                        <h5 th:text="${article.title}"></h5>
+                        <p th:text="${article.body}" class="text-muted"></p>
+                        <div th:text="${article.user.username}" class="author"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- CATEGORIE -->
+        <section class="container my-5">
+            <div class="category-block">
+                <h3 class="mb-4">Esplora categorie</h3>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="category-item">Tecnologia</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="category-item">Design</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="category-item">Startup</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="category-item">Marketing</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </main>
 
     <!-- HEAD FOOTER -->
+
     <head th:insert="~{index :: footer}"></head>
 
     <!-- SCRIPT BOOTSTRAP -->
-     <script th:replace="~{index :: bootstrapScript}"></script>
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+    <script>
+    window.addEventListener('load', function() {
+        const track = document.getElementById('ticker-track');
+        const fullWidth = track.offsetWidth / 2;
+        let x = 0;
+        (function tick() {
+        x -= 0.6;
+        if (x <= -fullWidth) x = 0;
+        track.style.transform = 'translateX(' + x + 'px)';
+        requestAnimationFrame(tick);
+        })();
+    });
+    </script>
 
 </body>
 

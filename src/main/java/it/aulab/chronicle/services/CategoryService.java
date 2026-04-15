@@ -3,6 +3,7 @@ package it.aulab.chronicle.services;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class CategoryService implements CrudService<CategoryDto, Category, Long>
 
     @Override
     public CategoryDto read(Long key) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
+        Optional<Category> optCategory = categoryRepository.findById(key);
+        return modelMapper.map(optCategory, CategoryDto.class);
     }
 
     @Override

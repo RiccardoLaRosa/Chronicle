@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:insert="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+
+    <head th:insert="~{index :: navbar}"></head>
+
+    <main>
+
+        <div class="container mt-5 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-8">
+
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                        <!-- Carosello Immagini -->
+                        <div id="articleCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="0"
+                                    class="active"></button>
+                                <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="1"></button>
+                            </div>
+
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img th:if="${article.image != null}" th:src="${article.image.path}"
+                                        class="d-block w-100" style="height: 400px; object-fit: cover;"
+                                        alt="Immagine 1">
+                                    <img th:unless="${article.image != null}" th:src="@{/images/no_photo.png}"
+                                        class="d-block w-100" style="height: 400px; object-fit: cover;"
+                                        alt="Immagine 1">
+                                </div>
+                            </div>
+
+                            <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+
+                        </div>
+
+                        <div class="card-body p-2 p-md-5">
+
+                            <!-- Tag -->
+                            <nav class="mb-3">
+                                <span
+                                    class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill uppercase">
+                                    Sostenibilità
+                                </span>
+                            </nav>
+
+                            <!-- Titolo -->
+                            <h3 th:text="${article.title}" class="card-title fw-bold text-dark display-5 mb-4">Title
+                            </h3>
+
+                            <!-- Autore -->
+                            <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
+                                <img src="https://ui-avatars.com/api/?name=RLmin&background=198754&color=fff"
+                                    class="rounded-circle me-3" width="45" height="45" alt="Author">
+                                <div>
+                                    <a class="text-muted" th:href="@{/search/{id}(id=${article.user.id})}">
+                                        <p th:text="${article.user.username}" class="mb-0 fw-semibold">User</p>
+                                    </a>
+                                    <p>Redatto il <span th:text="${article.publishDate}"
+                                            class="mb-0 small text-muted">data</span></p>
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2">
+
+                                <a href="#" onclick="goBack()" class="btn btn-link text-success text-decoration-none p-0 fw-bold">
+                                    ← Torna alla lista
+                                </a>
+
+                                <!-- Categoria -->
+                                <a th:href="@{/categories/search/{id}(id=${article.category.id})}"
+                                    class="btn btn-success px-4 py-2 rounded-3 shadow-sm text-white">
+                                    <span th:text="${article.category.name}">Categoria</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- HEAD FOOTER -->
+
+    <head th:insert="~{index :: footer}"></head>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+    <script>function goBack() {window.history.back()}</script>
+
+</body>
+
+</html>

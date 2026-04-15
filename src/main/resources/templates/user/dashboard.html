@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:insert="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+
+    <head th:insert="~{index :: navbar}"></head>
+
+    <main>
+        <div class="container py-4">
+
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="logo">Dashboard utente</div>
+            </div>
+
+            <div class="row g-4">
+
+                <!-- LEFT -->
+                <div class="col-md-4">
+
+                    <!-- PROFILO SEMPLICE -->
+                    <div class="card-box mb-4">
+                        <h5> Profilo</h5>
+                        <p class="muted mb-0">Benvenuto, Utente</p>
+                    </div>
+
+                    <!-- TAG -->
+                    <div class="card-box">
+                        <h5>🏷 I tuoi tag</h5>
+
+                        <span class="badge-tag">Spring</span>
+                        <span class="badge-tag">Java</span>
+                        <span class="badge-tag">Backend</span>
+
+                    </div>
+
+                </div>
+
+                <!-- RIGHT -->
+                <div class="col-md-8">
+
+                    <!-- FEATURED -->
+                    <div class="featured mb-4">
+                        <h5> Ultimo articolo</h5>
+                        <strong>DTO Architecture in Spring</strong>
+                        <p class="mb-0">Struttura pulita per progetti scalabili</p>
+                    </div>
+
+                    <!-- ARTICOLI -->
+                    <div class="card-box">
+
+                        <h5 class="mb-3">📰 I tuoi articoli</h5>
+
+                        <div class="article-item">
+                            <strong>Spring Boot Intro</strong>
+                            <div class="muted">Creazione primo progetto</div>
+                        </div>
+
+                        <div class="article-item">
+                            <strong>ManyToMany in JPA</strong>
+                            <div class="muted">Relazioni tra entità</div>
+                        </div>
+
+                        <div class="article-item">
+                            <strong>Frontend Bootstrap</strong>
+                            <div class="muted">UI moderna per blog</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- HEAD FOOTER -->
+
+    <head th:insert="~{index :: footer}"></head>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>

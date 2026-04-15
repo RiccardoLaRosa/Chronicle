@@ -1,6 +1,7 @@
 package it.aulab.chronicle.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -71,5 +72,12 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public User read(Long key) {
+        Optional<User> user = userRepository.findById(key);
+        return user.get();
+    }
+    
 
 }
