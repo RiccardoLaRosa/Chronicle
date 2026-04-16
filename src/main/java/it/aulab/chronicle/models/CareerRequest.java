@@ -1,13 +1,11 @@
 package it.aulab.chronicle.models;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,20 +18,25 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "career_request")
+public class CareerRequest {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(nullable=false, length=1000)
+    private String body;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    @Column
+    private boolean isChecked;
 
-     @OneToOne(mappedBy = "role")
-    CareerRequest careerRequest;
+    @OneToOne
+    @JoinColumn(name = "user_id", unique=true)
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }
