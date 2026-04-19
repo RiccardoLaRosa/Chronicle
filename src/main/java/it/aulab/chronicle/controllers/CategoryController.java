@@ -1,5 +1,8 @@
 package it.aulab.chronicle.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.aulab.chronicle.dtos.ArticleDto;
 import it.aulab.chronicle.dtos.CategoryDto;
 import it.aulab.chronicle.models.Category;
 import it.aulab.chronicle.services.ArticleService;
@@ -46,7 +50,12 @@ public class CategoryController {
         CategoryDto category = categoryService.read(id);
 
         viewModel.addAttribute("title", "Tutti gli articoli della Categoria: "+ category.getName());
-        viewModel.addAttribute("articles", articleService.searchByCategory(modelMapper.map(category, Category.class)));
+
+        List<ArticleDto> articles = articleService.searchByCategory(modelMapper.map(category, Category.class));
+
+        List<ArticleDto> acceptedArticles = articles.stream().filter(article -> Boolean.TRUE.equals(article.getIsAccepted())).collect(Collectors.toList());
+
+        viewModel.addAttribute("articles", acceptedArticles);
 
         return "article/articles";
     }

@@ -40,13 +40,23 @@
                     <a th:href="@{/articles/create}" class="btn btn-main btn-sm"
                         sec:authorize="isAuthenticated()">Scrivi</a>
 
-                    <!-- Dashboard con notifica richieste -->
+                    <!-- Dashboard Admin con notifica richieste -->
                     <a th:href="@{/admin/dashboard}" sec:authorize="hasAuthority('ROLE_ADMIN')"
                         class="nav-link-custom fw-semibold fs-6 position-relative d-flex align-items-center gap-1">
                         Dashboard
                         <span th:if="${careerRequests > 0}"
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ms-2"
                             style="font-size: 9px; padding: 3px 6px;" th:text="${careerRequests}">
+                        </span>
+                    </a>
+
+                    <!-- Dashboard Revisor con notifica richieste -->
+                    <a th:href="@{/revisor/dashboard}" sec:authorize="hasAuthority('ROLE_REVISOR')"
+                        class="nav-link-custom fw-semibold fs-6 position-relative d-flex align-items-center gap-1">
+                        Dashboard
+                        <span th:if="${articleRevisor > 0}"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ms-2"
+                            style="font-size: 9px; padding: 3px 6px;" th:text="${articleRevisor}">
                         </span>
                     </a>
                 </div>

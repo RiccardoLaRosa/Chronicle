@@ -1,10 +1,12 @@
 package it.aulab.chronicle.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.aulab.chronicle.dtos.ArticleDto;
 import it.aulab.chronicle.models.Article;
+import it.aulab.chronicle.repositories.ArticleRepository;
 import it.aulab.chronicle.services.ArticleService;
 import it.aulab.chronicle.services.CategoryService;
 import jakarta.validation.Valid;
+
 
 
 
@@ -36,13 +40,22 @@ public class ArticleController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     
     /* Rotta Index degli articoli */
     @GetMapping("index")
     public String articlesIndex(Model viewModel) {
         viewModel.addAttribute("title", "Esplora tutti gli articoli");
         
-        List<ArticleDto> articles = articleService.readAll();
+        List<ArticleDto> articles = new ArrayList<>();
+        for (Article article : articleRepository.findByIsAcceptedTrue()){
+            articles.add(modelMapper.map(article, ArticleDto.class));
+        }
 
         //articoli in ordine cronologico inverso
         Collections.sort(articles, Comparator.comparing(ArticleDto::getPublishDate).reversed());
@@ -74,7 +87,7 @@ public class ArticleController {
 
     /* Rotta per lo store di un articolo */
     @PostMapping
-    public String articleStore(@Valid @ModelAttribute("article") Article article, //Spring controlla TUTTE le annotazioni che hai nel model
+    public String articleStore(@Valid @ModelAttribute("article") Article article,
                                 BindingResult result, //errori della validazione
                                 RedirectAttributes redirectAttributes, //messaggi dopo redirect
                                 Principal principal,    //utente loggato
@@ -94,6 +107,24 @@ public class ArticleController {
         
         return "redirect:/";
     }
+
+    /* Rotta per azioni del revisor */
+    @PostMapping("accept")
+    public String articleSetAccepted(@RequestParam("action") String action, @RequestParam("articleId") Long articleId, RedirectAttributes redirectAttributes) {
+
+        if (action.equals("accept")) {
+            articleService.setIsAccepted(true, articleId);
+            redirectAttributes.addFlashAttribute("successMessage", "Articolo Accettato Correttamente");
+        } else if(action.equals("reject")) {
+            articleService.setIsAccepted(false, articleId);
+            redirectAttributes.addFlashAttribute("successMessage", "Articolo Rifiutato Correttamente");
+        } else {
+             redirectAttributes.addFlashAttribute("successMessage", "Azione non corretta!");
+        }
+
+        return "redirect:/revisor/dashboard";
+    }
+    
     
     
 }

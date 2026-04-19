@@ -15,7 +15,8 @@ import it.aulab.chronicle.repositories.UserRepository;
 @Service
 public class CareerRequestService {
     
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CareerRequestRepository careerRequestRepository;
@@ -25,10 +26,6 @@ public class CareerRequestService {
 
     @Autowired
     private RoleRepository roleRepository;
-
-    CareerRequestService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public boolean AlreadyExist(User user) {
         return careerRequestRepository.existsByUserId(user.getId());

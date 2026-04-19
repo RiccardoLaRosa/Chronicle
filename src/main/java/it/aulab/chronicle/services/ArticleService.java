@@ -69,6 +69,8 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
             article.setUser(user);
         }
 
+        article.setIsAccepted(null);
+
         Article savedArticle = articleRepository.save(article);
 
         if (!file.isEmpty()) {
@@ -101,6 +103,13 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         }
         return dtos;
     }
+
+     /* Azioni Revisori */
+     public void setIsAccepted(Boolean result, Long id) {
+        Article article = articleRepository.findById(id).get();
+        article.setIsAccepted(result);
+        articleRepository.save(article);
+     }
 
     @Override
     public ArticleDto update(Long key, Article model, MultipartFile file) {
