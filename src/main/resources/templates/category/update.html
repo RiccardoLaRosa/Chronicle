@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:insert="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+
+    <head th:insert="~{index :: navbar}"></head>
+
+    <main class="flex-grow-1 py-5 mb-5">
+        <div class="container mb-5">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-7 col-md-7">
+
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+
+                        <!-- Titolo -->
+                        <h5 class="fw-semibold mb-1" th:text="${title}">Modifica Categoria</h5>
+                        <p class="text-muted small mb-4">Modifica il nome della categoria selezionata</p>
+
+                        <hr class="mb-4" style="opacity: 0.07;">
+
+                        <!-- Form -->
+                        <form th:action="@{/categories/update/{id}(id=${category.id})}" th:object="${category}"
+                            method="POST">
+
+                            <!-- Nome categoria -->
+                            <div class="form-floating mb-3">
+                                <input type="text" th:field="*{name}" class="form-control rounded-3"
+                                    placeholder="Nome categoria">
+                                <label>Nome categoria</label>
+                                
+                                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+
+                            <!-- Bottoni -->
+                            <div class="d-flex gap-2 mt-4">
+                                <button type="submit" class="btn btn-main flex-grow-1 py-2 rounded-pill fw-semibold">
+                                    Aggiorna categoria
+                                </button>
+                                <a href="javascript:history.back()" class="btn rounded-pill px-4 py-2 fw-medium"
+                                    style="border: 1px solid rgba(0,0,0,0.12); color: #666;">
+                                    Annulla
+                                </a>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- HEAD FOOTER -->
+
+    <head th:insert="~{index :: footer}"></head>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>

@@ -4,14 +4,24 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.aulab.chronicle.dtos.CategoryDto;
 import it.aulab.chronicle.models.Category;
 import it.aulab.chronicle.services.ArticleService;
 import it.aulab.chronicle.services.CategoryService;
+import jakarta.validation.Valid;
+
+
+
+
 
 
 
@@ -45,11 +55,63 @@ public class CategoryController {
     /* Rotta per la creazione di una categoria */
     @GetMapping("create")
     public String categoryCreate(Model viewModel) {
-        viewModel.addAttribute("Title", "Crea una categoria");
+        viewModel.addAttribute("title", "Aggiungi una nuova categoria al sistema");
         viewModel.addAttribute("category", new Category());
         return "category/create";
     }
-    
 
-    
+    /* Rotta per il salvataggio di una categoria */
+    @PostMapping("save")
+    public String CategoryStore(@Valid @ModelAttribute("category") Category category, BindingResult result, RedirectAttributes redirectAttributes, Model viewModel) {
+
+        if (result.hasErrors()) {
+            viewModel.addAttribute("title", "Aggiungi una nuova categoria al sistema");
+            viewModel.addAttribute("category", category);
+            return "category/create";
+        }
+
+        categoryService.create(category, null, null);
+        redirectAttributes.addFlashAttribute("successMessage", "Categoria creata correttamente");
+
+        return "redirect:/admin/dashboard";
+    }
+
+    /* Rotta per la modifica di una cartegoria */
+    @GetMapping("edit/{id}")
+    public String editCategory(@PathVariable("id") Long id, Model viewModel) {
+
+        viewModel.addAttribute("title", "Modifica una categoria");
+        viewModel.addAttribute("category", categoryService.read(id));
+        
+        return "category/update";
+    }
+
+    /* Rotta per la memorizzazione di una categoria */
+    @PostMapping("update/{id}")
+    public String categoryUpdate(@PathVariable("id") Long id, @Valid @ModelAttribute("category") Category category, BindingResult result, RedirectAttributes redirectAttributes, Model viewModel) {
+
+        if (result.hasErrors()) {
+
+            viewModel.addAttribute("title", "Modifica una categoria");
+            viewModel.addAttribute("category", category);
+            return "category/update";
+
+        }
+
+        categoryService.update(id, category, null);
+        redirectAttributes.addFlashAttribute("successMessage", "Categoria modificata correttamente");
+
+        return "redirect:/admin/dashboard";
+
+    }
+
+    /* Rotta per l'eliminazione delle categorie */
+    @DeleteMapping("delete/{id}")
+    public String categoryDelete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+
+        categoryService.delete(id);
+         redirectAttributes.addFlashAttribute("successMessage", "Categoria eliminata correttamente");
+
+        return "redirect:/admin/dashboard";
+    }
 }
