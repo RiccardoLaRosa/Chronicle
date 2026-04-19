@@ -14,6 +14,7 @@ import it.aulab.chronicle.services.ArticleService;
 import it.aulab.chronicle.services.CategoryService;
 
 
+
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
@@ -30,7 +31,7 @@ public class CategoryController {
 
     /* Rotta per la ricerca degli articoli in base alla categoria */
     @GetMapping("search/{id}")
-    public String getMethodName(@PathVariable("id") Long id, Model viewModel) {
+    public String searchByCategory(@PathVariable("id") Long id, Model viewModel) {
 
         CategoryDto category = categoryService.read(id);
 
@@ -39,5 +40,16 @@ public class CategoryController {
 
         return "article/articles";
     }
+
+    
+    /* Rotta per la creazione di una categoria */
+    @GetMapping("create")
+    public String categoryCreate(Model viewModel) {
+        viewModel.addAttribute("Title", "Crea una categoria");
+        viewModel.addAttribute("category", new Category());
+        return "category/create";
+    }
+    
+
     
 }

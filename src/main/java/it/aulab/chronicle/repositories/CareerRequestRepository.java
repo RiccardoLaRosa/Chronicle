@@ -14,4 +14,5 @@ public interface CareerRequestRepository extends JpaRepository<CareerRequest, Lo
 
     boolean existsByUserId(Long userId);
 
+    boolean existsByRoleId(Long roleId);
 }

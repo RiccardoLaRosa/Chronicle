@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:insert="~{index :: head}"></head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div th:insert="~{index :: navbar}"></div>
+
+    <main>
+        <div class="container py-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-light rounded shadow mb-4 p-3">
+                <div>
+                    <h3 class="mb-0 fw-bold">Dashboard Admin</h3>
+                    <small class="text-muted">Gestione richieste degli utenti</small>
+                </div>
+            </div>
+
+            <!-- TABELLA RICHIESTE -->
+            <div class="card-box">
+
+                <h5 class="mb-3">📋 Tutte le richieste</h5>
+
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Utente</th>
+                            <th>Ruolo</th>
+                            <th>Stato</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="request : ${requests}">
+
+                            <td th:text="${request.user.username}"></td>
+
+                            <!-- <td th:text="${request.body}"></td> -->
+
+                            <td th:text="${request.role.name}"></td>
+
+                            <td>
+                                <span class="badge bg-warning text-dark">In attesa</span>
+                            </td>
+
+                            <td class="d-flex gap-2">
+
+                                <!-- DETTAGLIO -->
+                                <a th:href="@{/operations/career/request/detail/{id}(id=${request.id})}" class="btn btn-primary btn-sm">Apri</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div th:insert="~{index :: footer}"></div>
+
+    <!-- SCRIPT -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>

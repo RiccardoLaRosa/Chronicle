@@ -18,12 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.aulab.chronicle.dtos.ArticleDto;
 import it.aulab.chronicle.dtos.UserDto;
 import it.aulab.chronicle.models.User;
+import it.aulab.chronicle.repositories.CareerRequestRepository;
 import it.aulab.chronicle.services.ArticleService;
 import it.aulab.chronicle.services.CategoryService;
 import it.aulab.chronicle.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
 
 
 @Controller
@@ -37,6 +39,9 @@ public class UserController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CareerRequestRepository careerRequestRepository;
 
     /* Rotta Home */
     @GetMapping("/")
@@ -110,5 +115,15 @@ public class UserController {
 
             return "article/articles";
         }
+
+        /* Rotta per la dashboard */
+        @GetMapping("/admin/dashboard")
+        public String adminDashboard(Model viewModel) {
+            viewModel.addAttribute("title", "Richieste ricevute:");
+            viewModel.addAttribute("requests", careerRequestRepository.findByIsCheckedFalse());
+            viewModel.addAttribute("categories", categoryService.readAll());
+            return "admin/dashboard";
+        }
+        
         
 }

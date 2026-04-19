@@ -67,8 +67,12 @@
 
                             <!-- Autore -->
                             <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
-                                <img src="https://ui-avatars.com/api/?name=RLmin&background=198754&color=fff"
-                                    class="rounded-circle me-3" width="45" height="45" alt="Author">
+                                <!-- Avatar con iniziale -->
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                                    style="width:34px; height:34px; background-color:#e1f5ee; color:#2e7d5a; font-size:13px;">
+                                    <span
+                                        th:text="${#strings.substring(#authentication.principal.fullname, 0, 1).toUpperCase()}"></span>
+                                </div>
                                 <div>
                                     <a class="text-muted" th:href="@{/search/{id}(id=${article.user.id})}">
                                         <p th:text="${article.user.username}" class="mb-0 fw-semibold">User</p>
@@ -81,7 +85,8 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-2 pt-2">
 
-                                <a href="#" onclick="goBack()" class="btn btn-link text-success text-decoration-none p-0 fw-bold">
+                                <a href="#" onclick="goBack()"
+                                    class="btn btn-link text-success text-decoration-none p-0 fw-bold">
                                     ← Torna alla lista
                                 </a>
 
@@ -108,7 +113,7 @@
     <!-- SCRIPT BOOTSTRAP -->
     <script th:replace="~{index :: bootstrapScript}"></script>
 
-    <script>function goBack() {window.history.back()}</script>
+    <script>function goBack() { window.history.back() }</script>
 
 </body>
 

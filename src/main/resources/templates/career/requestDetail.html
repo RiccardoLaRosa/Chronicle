@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<!-- HEAD -->
+
+<head th:replace="~{index :: head}"></head>
+
+<body>
+
+    <!-- HEAD NAVBAR -->
+    <div th:replace="~{index :: navbar}"></div>
+
+
+    <main class="flex-grow-1 py-5">
+        <div class="container" style="max-width: 700px;">
+
+            <!-- Torna indietro -->
+            <a href="javascript:history.back()"
+                class="text-decoration-none text-muted small mb-4 d-inline-flex align-items-center gap-1">
+                &#8592; Torna indietro
+            </a>
+
+            <div class="card border-0 shadow-sm p-5 mt-3" style="border-radius: 16px;">
+
+                <!-- Badge stato -->
+                <span class="badge rounded-pill mb-4 d-inline-block py-3"
+                    style="background-color: #fff3cd; color: #856404; font-size: 11px; letter-spacing: 0.5px;">
+                    IN ATTESA
+                </span>
+
+                <!-- Autore -->
+                <p class="text-uppercase text-muted fw-semibold mb-2" style="font-size: 11px; letter-spacing: 1px;">
+                    Richiesta di</p>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                        style="width:44px; height:44px; background-color:#e1f5ee; color:#2e7d5a; font-size:15px;">
+                        <!-- Iniziali utente -->
+                        <span th:text="${#strings.substring(request.user.username, 0, 1).toUpperCase()}"></span>
+                    </div>
+                    <div>
+                        <div class="fw-semibold" th:text="${request.user.username}"></div>
+                        <div class="text-muted" style="font-size: 12px;">Autore della richiesta</div>
+                    </div>
+                </div>
+
+                <hr class="my-4" style="opacity: 0.07;">
+
+                <!-- Messaggio -->
+                <p class="text-uppercase text-muted fw-semibold mb-2" style="font-size: 11px; letter-spacing: 1px;">
+                    Messaggio</p>
+                <p class="text-secondary lh-lg" th:text="${request.body}"></p>
+
+                <!-- Bottoni -->
+                <div class="d-flex gap-3 mt-4">
+
+                    <!-- Accetta -->
+                     <form th:action="@{/operations/career/request/accept/{id}(id=${request.id})}" method="post">
+                         <button type="submit" class="btn rounded-pill px-4 py-2 fw-semibold text-white" style="background-color: #2e7d5a;"> &#10003; Accetta richiesta</button>
+                     </form>
+
+                    <!-- Torna indietro -->
+                    <a th:href="@{/admin/dashboard}" class="btn rounded-pill px-4 py-2 fw-medium"
+                        style="border: 1px solid rgba(0,0,0,0.12); color: #666;">
+                        Torna indietro
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+
+    <!-- HEAD FOOTER -->
+    <div th:replace="~{index :: footer}"></div>
+
+    <!-- SCRIPT BOOTSTRAP -->
+    <script th:replace="~{index :: bootstrapScript}"></script>
+
+</body>
+
+</html>

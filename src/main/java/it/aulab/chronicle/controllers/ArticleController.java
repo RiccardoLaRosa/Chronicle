@@ -40,7 +40,7 @@ public class ArticleController {
     /* Rotta Index degli articoli */
     @GetMapping("index")
     public String articlesIndex(Model viewModel) {
-        viewModel.addAttribute("title", "Tutti gli articoli");
+        viewModel.addAttribute("title", "Esplora tutti gli articoli");
         
         List<ArticleDto> articles = articleService.readAll();
 
