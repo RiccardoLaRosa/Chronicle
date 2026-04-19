@@ -122,8 +122,12 @@
         <div class="modal fade" id="searchModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content p-3 ra">
-                    <input type="text" class="form-control form-control-lg w-100"
-                        placeholder="Cerca articoli, utenti, tag..." autofocus>
+                    <form th:action="@{/articles/search}" method="get" class="d-flex">
+                        <input type="search" name="keyword" class="form-control form-control-lg w-100"
+                            placeholder="Cerca articoli, utenti, tag..." autofocus>
+                    <button class="btn btn-outline-success ms-2" type="submit">Cerca</button>
+
+                    </form>
                 </div>
             </div>
         </div>
