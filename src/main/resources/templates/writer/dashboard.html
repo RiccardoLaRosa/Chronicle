@@ -86,8 +86,8 @@
                                         </a>
 
                                         <!-- Elimina -->
-                                        <form th:action="@{/articles/delete/{id}(id=${article.id})}" method="POST"
-                                            class="m-0">
+                                        <form th:action="@{/articles/delete/{id}(id=${article.id})}" method="POST" class="m-0">
+                                            <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit"
                                                 class="btn btn-outline-danger btn-sm rounded-pill px-3"
                                                 onclick="return confirm('Sei sicuro di voler eliminare questo articolo?')">

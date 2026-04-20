@@ -20,6 +20,7 @@ import it.aulab.chronicle.models.Article;
 import it.aulab.chronicle.models.Category;
 import it.aulab.chronicle.models.User;
 import it.aulab.chronicle.repositories.ArticleRepository;
+import it.aulab.chronicle.repositories.ImageRepository;
 import it.aulab.chronicle.repositories.UserRepository;
 
 @Service
@@ -36,6 +37,9 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
     public List<ArticleDto> readAll() {
@@ -144,7 +148,8 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
                 imageService.saveImageOnDb(url, model);
 
                 // 3. Ricarica l'articolo dal DB così ha l'immagine aggiornata
-                model = articleRepository.findById(key).get();
+                Article refreshed = articleRepository.findById(key).get();
+                model.setImage(refreshed.getImage());
                 model.setIsAccepted(null);
 
             } catch (Exception e) {
@@ -166,20 +171,33 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         return modelMapper.map(savedArticle, ArticleDto.class);
     }
 
+   @Transactional
     @Override
     public void delete(Long key) {
         if (articleRepository.existsById(key)) {
 
             Article article = articleRepository.findById(key).get();
 
-            try {
-                String path = article.getImage().getPath();
-                imageService.deleteImage(path);
-            } catch (Exception e) {
-                e.printStackTrace();
+            String imagePath = null;
+            if (article.getImage() != null) {
+                imagePath = article.getImage().getPath();
+            }
+
+
+            if (imagePath != null) {
+                imageRepository.deleteByPath(imagePath);
             }
 
             articleRepository.deleteById(key);
+
+            if (imagePath != null) {
+                try {
+                    imageService.deleteImage(imagePath);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
