@@ -65,4 +65,21 @@ public class Article {
     @JsonIgnoreProperties({"articles"})
     private Image image;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Article)) return false;
+
+        Article article = (Article) obj;
+
+        return title.equals(article.getTitle()) &&
+            body.equals(article.getBody()) &&
+            publishDate.equals(article.getPublishDate()) &&
+            category.getName().equals(article.getCategory().getName()) &&
+            (image == null ? article.getImage() == null
+                            : image.getPath().equals(article.getImage().getPath()));
+    }
+
+    
+
 }

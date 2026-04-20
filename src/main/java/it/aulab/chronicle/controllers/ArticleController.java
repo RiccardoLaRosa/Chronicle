@@ -32,6 +32,7 @@ import jakarta.validation.Valid;
 
 
 
+
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
@@ -141,6 +142,43 @@ public class ArticleController {
 
         return "article/articles";
     }
+
+    /* Rotta di modifica di una Articolo */
+    @GetMapping("edit/{id}")
+    public String editArticle(@PathVariable("id") Long id, Model viewModel) {
+        viewModel.addAttribute("title", "Modifica il tuo articolo");
+        viewModel.addAttribute("categories", categoryService.readAll());
+        viewModel.addAttribute("article", articleService.read(id));
+        return "article/edit";
+    }
+
+    /* Rotta per il salvataggio dell'articolo modificato */
+    @PostMapping("update/{id}")
+    public String updateArticle(@PathVariable("id") Long id, @Valid @ModelAttribute("article") Article article, BindingResult result, RedirectAttributes redirectAttributes, Principal principal, MultipartFile file, Model viewModel) {
+
+        if (result.hasErrors()) {
+            viewModel.addAttribute("title", "Modifica il tuo articolo");
+            viewModel.addAttribute("categories", categoryService.readAll());
+            viewModel.addAttribute("article", articleService.read(id));
+            return "article/edit";
+        }
+
+        articleService.update(id, article, file);
+        redirectAttributes.addFlashAttribute("successMessage", "Articolo Modificato Correttamente");
+        
+        return "redirect:/writer/dashboard";
+    }
+
+
+    /* Rotta per l'eliminazione di un articolo */
+    @GetMapping("delete/{id}")
+    public String deleteArticle(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        articleService.delete(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Articolo Eliminato Correttamente");
+        
+        return "redirect:/writer/dashboard";
+    }
+        
     
     
     

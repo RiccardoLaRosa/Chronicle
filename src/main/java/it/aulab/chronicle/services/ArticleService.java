@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -119,13 +120,68 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         return dtos;
      }
 
+    @Transactional
     @Override
     public ArticleDto update(Long key, Article model, MultipartFile file) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        if (!articleRepository.existsById(key)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        model.setId(key);
+        Article article = articleRepository.findById(key).get();
+        model.setUser(article.getUser());
+
+        if (!file.isEmpty()) {
+            try {
+                // 1. Elimina la vecchia immagine (ora sincrono)
+                if (article.getImage() != null) {
+                    imageService.deleteImage(article.getImage().getPath());
+                }
+
+                // 2. Salva la nuova immagine su cloud e su DB
+                String url = imageService.saveImageOnCloud(file);
+                imageService.saveImageOnDb(url, model);
+
+                // 3. Ricarica l'articolo dal DB così ha l'immagine aggiornata
+                model = articleRepository.findById(key).get();
+                model.setIsAccepted(null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Errore nel salvataggio dell'immagine");
+            }
+        } else {
+            // Nessun nuovo file: mantieni l'immagine esistente
+            model.setImage(article.getImage());
+
+            if (!model.equals(article)) {
+                model.setIsAccepted(null);
+            } else {
+                model.setIsAccepted(article.getIsAccepted());
+            }
+        }
+
+        Article savedArticle = articleRepository.save(model);
+        return modelMapper.map(savedArticle, ArticleDto.class);
     }
 
     @Override
     public void delete(Long key) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (articleRepository.existsById(key)) {
+
+            Article article = articleRepository.findById(key).get();
+
+            try {
+                String path = article.getImage().getPath();
+                imageService.deleteImage(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            articleRepository.deleteById(key);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

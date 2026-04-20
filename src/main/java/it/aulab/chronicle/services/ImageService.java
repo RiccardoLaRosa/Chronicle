@@ -9,8 +9,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,13 +19,17 @@ import it.aulab.chronicle.models.Article;
 import it.aulab.chronicle.models.Image;
 import it.aulab.chronicle.repositories.ImageRepository;
 import it.aulab.chronicle.utils.StringManipulation;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class ImageService {
-    
+
     @Autowired
     private ImageRepository imageRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;  // aggiunto
 
     @Value("${supabase.url}")
     private String supabaseUrl;
@@ -45,7 +50,6 @@ public class ImageService {
         imageRepository.save(Image.builder().path(url).article(article).build());
     }
 
-    // @Async rimosso — ritorna direttamente String
     public String saveImageOnCloud(MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
             try {
@@ -70,21 +74,19 @@ public class ImageService {
         } else {
             throw new IllegalArgumentException("File is empty");
         }
-
         return null;
     }
 
-    @Async
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)  // transazione separata + flush garantito
     public void deleteImage(String imagePath) throws IOException {
 
         String url = imagePath.replace(supabaseImage, supabaseBucket);
 
         imageRepository.deleteByPath(imagePath);
+        entityManager.flush();  // forza il DELETE sul DB prima di uscire dal metodo
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + supabaseKey);
-
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);

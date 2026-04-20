@@ -54,7 +54,10 @@
                             </nav>
 
                             <!-- Titolo -->
-                            <h3 th:text="${article.title}" class="card-title fw-bold text-dark display-6 mb-4"></h3>
+                            <h3 th:text="${article.title}" class="card-title fw-bold text-dark display-6 mb-1"></h3>
+
+                            <!-- Contenuto -->
+                            <h6 th:text="${article.body}" class="text-muted fs-4 mb-4"></h6>
 
                             <!-- Autore -->
                             <div class="d-flex align-items-center gap-3 mb-4 pb-4 border-bottom">

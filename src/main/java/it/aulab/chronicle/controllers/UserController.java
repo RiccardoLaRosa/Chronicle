@@ -1,5 +1,6 @@
 package it.aulab.chronicle.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ import it.aulab.chronicle.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
 
 
 
@@ -91,6 +93,8 @@ public class UserController {
         HttpServletRequest request,
         HttpServletResponse response){
 
+            System.out.println(">>> REGISTRAZIONE CHIAMATA per: " + userDto.getEmail()); // aggiungi questo
+
             User userExist = userService.findUserByEmail(userDto.getEmail());
 
             if (userExist != null && userExist.getEmail() != null && !userExist.getEmail().isEmpty()) {
@@ -147,6 +151,20 @@ public class UserController {
             viewModel.addAttribute("articles", articleRepository.findAll());
             return "revisor/dashboard";
         }
+
+        /* Rotta per la dashboard del Writer */
+        @GetMapping("writer/dashboard")
+        public String adminWriter(Model viewmModel, Principal principal) {
+
+            viewmModel.addAttribute("title","I tuoi Articoli:");
+
+            List<ArticleDto> articles = articleService.readAll().stream().filter(article -> article.getUser().getEmail().equals(principal.getName())).toList();
+
+            viewmModel.addAttribute("articles", articles);
+
+            return "writer/dashboard";
+        }
+        
         
         
 }

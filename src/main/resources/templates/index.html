@@ -38,7 +38,7 @@
                     <a th:href="@{/}" class="nav-link-custom fw-semibold fs-6">Home</a>
                     <a th:href="@{/articles/index}" class="nav-link-custom fw-semibold fs-6">Esplora</a>
                     <a th:href="@{/articles/create}" class="btn btn-main btn-sm"
-                        sec:authorize="isAuthenticated()">Scrivi</a>
+                        sec:authorize="isAuthenticated() && hasAuthority('ROLE_WRITER')">Scrivi</a>
 
                     <!-- Dashboard Admin con notifica richieste -->
                     <a th:href="@{/admin/dashboard}" sec:authorize="hasAuthority('ROLE_ADMIN')"
@@ -58,6 +58,12 @@
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger ms-2"
                             style="font-size: 9px; padding: 3px 6px;" th:text="${articleRevisor}">
                         </span>
+                    </a>
+
+                    <!-- Dashboard Writer con notifica richieste -->
+                    <a th:href="@{/writer/dashboard}" sec:authorize="hasAuthority('ROLE_WRITER')"
+                        class="nav-link-custom fw-semibold fs-6 position-relative d-flex align-items-center gap-1">
+                        Dashboard
                     </a>
                 </div>
 
