@@ -148,7 +148,15 @@ public class UserController {
         @GetMapping("/revisor/dashboard")
         public String adminRevisor(Model viewModel) {
             viewModel.addAttribute("title", "Articoli da Revisionare");
-            viewModel.addAttribute("articles", articleRepository.findAll());
+
+            List<ArticleDto> articles = new ArrayList<>();
+            for (Article article : articleRepository.findAll()){
+                articles.add(modelMapper.map(article, ArticleDto.class));
+            }
+            //articoli in ordine cronologico inverso
+            Collections.sort(articles, Comparator.comparing(ArticleDto::getPublishDate).reversed());
+
+            viewModel.addAttribute("articles", articles);
             return "revisor/dashboard";
         }
 

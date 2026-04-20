@@ -5,3 +5,5 @@ insert into roles (name) values('ROLE_ADMIN'), ('ROLE_REVISOR'), ('ROLE_WRITER')
 insert into users_roles (user_id, role_id) values (1,1);
 
 insert into categories (name) values ('politica'), ('economia'), ('food&drink'), ('sport'), ('intrattenimento'), ('tech');
+
+INSERT INTO categories (name) VALUES ('scienza'), ('salute'), ('moda'), ('cinema'), ('musica'), ('arte');
