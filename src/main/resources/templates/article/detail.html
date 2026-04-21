@@ -7,101 +7,52 @@
 
     <div th:replace="~{index :: navbar}"></div>
 
-    <main class="flex-grow-1">
-        <div class="container mt-5 mb-5">
-            <div class="row justify-content-center">
-                <div class="col-md-7 col-lg-8">
+    <main class="flex-grow-1 d-flex align-items-center mb-5">
+        <div class="container py-5 mb-5">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-11 col-xl-9">
 
-                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-
-                        <!-- Carosello Immagini -->
-                        <div id="articleCarousel" class="carousel slide" data-bs-ride="carousel">
-
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="0"
-                                    class="active"></button>
-                                <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="1"></button>
+                    <div class="glass-chassis p-4 p-lg-5">
+                        <div class="row align-items-center g-5">
+                            
+                            <div class="col-md-5">
+                                <img th:if="${article.image != null}" th:src="${article.image.path}"
+                                    class="w-100 img-modern" style="aspect-ratio: 1/1;">
+                                <img th:unless="${article.image != null}" th:src="@{/images/no_photo.png}"
+                                    class="w-100 img-modern" style="aspect-ratio: 1/1;">
                             </div>
 
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img th:if="${article.image != null}" th:src="${article.image.path}"
-                                        class="d-block w-100 object-fit-cover" height="500" alt="Immagine articolo">
-                                    <img th:unless="${article.image != null}" th:src="@{/images/no_photo.png}"
-                                        class="d-block w-100 object-fit-cover" height="500" alt="Immagine di default">
+                            <div class="col-md-7">
+
+                                <div class="d-flex align-items-center mb-4">
+                                    <span class="me-1 fs-5 text-success"><i class="bi bi-bookmarks-fill"></i></i></span>
+                                    <span class="label-mini" th:text="${article.category?.name ?: 'Standard'}"></span>
+                                    <span class="ms-auto label-mini opacity-50">Rev. 2026</span>
                                 </div>
-                            </div>
 
-                            <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel"
-                                data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
+                                <h1 class="display-3 fw-bold text-dark mb-4" style="letter-spacing: -2px; line-height: 0.95;" th:text="${article.title}"></h1>
 
-                            <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
+                                <p class="fs-5 text-secondary mb-5 fw-light" th:text="${article.body}"></p>
 
-                        </div>
-
-                        <div class="card-body p-3 p-md-5">
-
-                            <!-- Categoria tag -->
-                            <nav class="mb-3">
-                                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill text-uppercase fw-semibold"
-                                    th:text="${article.category != null ? article.category.name : 'Nessuna categoria'}">
-                                </span>
-                            </nav>
-
-                            <!-- Titolo -->
-                            <h3 th:text="${article.title}" class="card-title fw-bold text-dark display-6 mb-1"></h3>
-
-                            <!-- Contenuto -->
-                            <h6 th:text="${article.body}" class="text-muted fs-4 mb-4"></h6>
-
-                            <!-- Autore -->
-                            <div class="d-flex align-items-center gap-3 mb-4 pb-4 border-bottom">
-                                <!-- Avatar -->
-                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold bg-success-subtle text-success"
-                                    style="width:34px; height:34px; font-size:13px;">
-                                    <span
-                                        th:text="${#strings.substring(article.user.username, 0, 1).toUpperCase()}"></span>
+                                <div class="d-flex align-items-center justify-content-between pt-4 border-top border-light">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="fs-5"><i class="bi bi-pencil-square"></i></span>
+                                        <a class="text-muted text-decoration-none btn-user" th:href="@{/search/{id}(id=${article.user.id})}">
+                                            <span class="small fw-bold fs-6" th:text="${article.user.username}">user</span>
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="d-flex gap-4 align-items-center">
+                                        <a href="#" onclick="goBack()" class="text-dark text-decoration-none small opacity-50 fw-bold">indietro</a>
+                                        <a th:if="${article.category != null}" th:href="@{/categories/search/{id}(id=${article.category.id})}" class="btn-modern text-decoration-none">esplora_
+                                        </a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <a class="text-muted text-decoration-none"
-                                        th:href="@{/search/{id}(id=${article.user.id})}">
-                                        <p th:text="${article.user.username}" class="mb-0 fw-semibold"></p>
-                                    </a>
-                                    <p class="mb-0 small text-muted">
-                                        Redatto il <span th:text="${article.publishDate}"></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Azioni -->
-                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2">
-
-                                <a href="#" onclick="goBack()"
-                                    class="btn btn-link text-success text-decoration-none p-0 fw-bold">
-                                    ← Torna alla lista
-                                </a>
-
-                                <!-- Categoria -->
-                                <a th:if="${article.category != null}"
-                                    th:href="@{/categories/search/{id}(id=${article.category.id})}"
-                                    class="btn btn-success px-4 py-2 rounded-3 shadow-sm text-white">
-                                    <span th:text="${article.category.name}"></span>
-                                </a>
-
-                                <span th:unless="${article.category != null}"
-                                    class="btn btn-secondary px-4 py-2 rounded-3 disabled">
-                                    Nessuna categoria
-                                </span>
-
                             </div>
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -109,6 +60,7 @@
 
     <div th:replace="~{index :: footer}"></div>
     <script th:replace="~{index :: bootstrapScript}"></script>
+    
     <script>function goBack() { window.history.back() }</script>
 
 </body>

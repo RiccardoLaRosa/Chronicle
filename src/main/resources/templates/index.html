@@ -19,7 +19,7 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
     <!-- Titolo -->
-    <title th:text="${title}">Title</title>
+    <title th:text="${title}"></title>
 
 </head>
 
@@ -30,7 +30,7 @@
     <div th:fragment="navbar">
 
         <!-- Inizio Navbar -->
-        <nav class="navbar bg-white border-bottom py-3">
+        <nav class="navbar bg-white border-bottom py-3 fixed-top">
             <div class="container position-relative d-flex align-items-center justify-content-between">
 
                 <!-- SINISTRA -->
@@ -68,7 +68,7 @@
                 </div>
 
                 <!-- LOGO CENTRATO -->
-                <a href="/" class="position-absolute top-50 start-50 translate-middle logo-custom">CHRONICLE</a>
+                <a href="/" class="position-absolute top-50 start-50 translate-middle logo-custom">CHRONICLE<i class="bi bi-body-text ms-2"></i></a>
 
                 <!-- DESTRA -->
                 <div class="d-flex align-items-center gap-2">
@@ -127,7 +127,7 @@
         <!-- Overlay Ricerca -->
         <div class="modal fade" id="searchModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content p-3 ra">
+                <div class="modal-content p-3">
                     <form th:action="@{/articles/search}" method="get" class="d-flex">
                         <input type="search" name="keyword" class="form-control form-control-lg w-100"
                             placeholder="Cerca articoli, utenti, tag..." autofocus>
