@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import it.aulab.chronicle.dtos.ArticleDto;
 import it.aulab.chronicle.models.Article;
 import it.aulab.chronicle.models.Category;
+import it.aulab.chronicle.models.Image;
 import it.aulab.chronicle.models.User;
 import it.aulab.chronicle.repositories.ArticleRepository;
 import it.aulab.chronicle.repositories.ImageRepository;
@@ -171,7 +172,7 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
         return modelMapper.map(savedArticle, ArticleDto.class);
     }
 
-   @Transactional
+    @Transactional
     @Override
     public void delete(Long key) {
         if (articleRepository.existsById(key)) {
@@ -179,13 +180,14 @@ public class ArticleService implements CrudService<ArticleDto, Article, Long> {
             Article article = articleRepository.findById(key).get();
 
             String imagePath = null;
+
             if (article.getImage() != null) {
                 imagePath = article.getImage().getPath();
-            }
-
-
-            if (imagePath != null) {
-                imageRepository.deleteByPath(imagePath);
+                Image image = article.getImage();
+                image.setArticle(null);
+                imageRepository.save(image);
+                article.setImage(null);
+                articleRepository.save(article);
             }
 
             articleRepository.deleteById(key);

@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,13 +76,12 @@ public class ImageService {
         return null;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)  // transazione separata + flush garantito
+    @Transactional
     public void deleteImage(String imagePath) throws IOException {
 
         String url = imagePath.replace(supabaseImage, supabaseBucket);
 
         imageRepository.deleteByPath(imagePath);
-        entityManager.flush();  // forza il DELETE sul DB prima di uscire dal metodo
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + supabaseKey);
