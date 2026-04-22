@@ -27,21 +27,26 @@
 
                                 <!-- TITLE -->
                                 <div class="form-floating mb-3">
-                                    <input type="text" th:field="*{title}" class="form-control" placeholder="Inserisci un articolo...">
+                                    <input type="text" th:field="*{title}" class="form-control" placeholder="Inserisci un titolo">
                                     <label>Titolo</label>
 
                                     <div class="text-danger small mt-1" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
                                 </div>
 
+                                <!-- SUBTITLE -->
+                                <div class="form-floating mb-3">
+                                    <input type="text" th:field="*{subtitle}" class="form-control" placeholder="Inserisci sottotitolo">
+                                    <label>SottoTitolo</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('subtitle')}" th:errors="*{subtitle}"></div>
+                                </div>
+
                                 <!-- BODY -->
                                 <div class="form-floating mb-3">
-                                    <textarea th:field="*{body}" class="form-control" placeholder="Contenuto"
-                                        style="height: 150px"></textarea>
+                                    <textarea th:field="*{body}" class="form-control" placeholder="Contenuto" style="height: 150px"></textarea>
                                     <label>Contenuto</label>
 
-                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('body')}"
-                                        th:errors="*{body}">
-                                    </div>
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></div>
                                 </div>
 
                                 <!-- DATE -->

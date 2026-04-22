@@ -1,5 +1,6 @@
 package it.aulab.chronicle.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -8,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
-     @OneToOne(mappedBy = "role")
-    CareerRequest careerRequest;
+    @OneToMany(mappedBy = "role")
+    List<CareerRequest> careerRequests = new ArrayList<>();
 
 }

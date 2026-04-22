@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it" xmlns="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{index :: head}"></head>
 
@@ -7,51 +7,66 @@
 
     <div th:replace="~{index :: navbar}"></div>
 
-    <main class="flex-grow-1 d-flex align-items-center mb-5">
-        <div class="container py-5 mb-5">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-11 col-xl-9">
+    <main class="flex-grow-1 mb-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-9 col-xl-9">
 
+                    <!-- META HEADER -->
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <span class="text-success fw-bold small text-uppercase letter-spacing-1">
+                            <i class="bi bi-bookmarks-fill me-1"></i>
+                            <span th:text="${article.category?.name ?: 'Standard'}"></span>
+                        </span>
+                        <span class="text-muted">·</span>
+                        <span class="text-muted small">Rev. 2026</span>
+                    </div>
+
+                    <!-- TITOLO -->
+                    <h1 class="display-4 fw-bold text-dark mb-3" style="letter-spacing: -1.5px; line-height: 1.05;"
+                        th:text="${article.title}"></h1>
+
+                    <!-- SOTTOTITOLO -->
+                    <p class="fs-4 text-secondary mb-4 fw-light"
+                        style="border-left: 3px solid #dee2e6; padding-left: 1.25rem; line-height: 1.5;"
+                        th:text="${article.subtitle}"></p>
+
+
+                    <!-- IMMAGINE HERO -->
+                    <div class="mb-3">
+                        <img th:if="${article.image != null}" th:src="${article.image.path}" class="w-100 img-modern"
+                            style="aspect-ratio: 16/7; object-fit: cover;">
+                        <img th:unless="${article.image != null}" th:src="@{/images/no_photo.png}"
+                            class="w-100 img-modern" style="aspect-ratio: 16/7; object-fit: cover; height: 450px;">
+                    </div>
+
+                    <!-- CORPO -->
                     <div class="glass-chassis p-4 p-lg-5">
-                        <div class="row align-items-center g-5">
-                            
-                            <div class="col-md-5">
-                                <img th:if="${article.image != null}" th:src="${article.image.path}"
-                                    class="w-100 img-modern" style="aspect-ratio: 1/1;">
-                                <img th:unless="${article.image != null}" th:src="@{/images/no_photo.png}"
-                                    class="w-100 img-modern" style="aspect-ratio: 1/1;">
-                            </div>
+                        <p class="fs-5 text-secondary fw-light" style="line-height: 1.85;" th:text="${article.body}">
+                        </p>
+                    </div>
 
-                            <div class="col-md-7">
-
-                                <div class="d-flex align-items-center mb-4">
-                                    <span class="me-1 fs-5 text-success"><i class="bi bi-bookmarks-fill"></i></i></span>
-                                    <span class="label-mini" th:text="${article.category?.name ?: 'Standard'}"></span>
-                                    <span class="ms-auto label-mini opacity-50">Rev. 2026</span>
-                                </div>
-
-                                <h1 class="display-3 fw-bold text-dark mb-4" style="letter-spacing: -2px; line-height: 0.95;" th:text="${article.title}"></h1>
-
-                                <p class="fs-5 text-secondary mb-5 fw-light" th:text="${article.body}"></p>
-
-                                <div class="d-flex align-items-center justify-content-between pt-4 border-top border-light">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="fs-5"><i class="bi bi-pencil-square"></i></span>
-                                        <a class="text-muted text-decoration-none btn-user" th:href="@{/search/{id}(id=${article.user.id})}">
-                                            <span class="small fw-bold fs-6" th:text="${article.user.username}">user</span>
-                                        </a>
-                                    </div>
-                                    
-                                    <div class="d-flex gap-4 align-items-center">
-                                        <a href="#" onclick="goBack()" class="text-dark text-decoration-none small opacity-50 fw-bold">indietro</a>
-                                        <a th:if="${article.category != null}" th:href="@{/categories/search/{id}(id=${article.category.id})}" class="btn-modern text-decoration-none">esplora_
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
+                    <!-- AUTORE + AZIONI -->
+                    <div
+                        class="d-flex align-items-center justify-content-between py-3 mb-4 border-top border-bottom mt-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fs-5"><i class="bi bi-pencil-square text-muted"></i></span>
+                            <a class="text-muted text-decoration-none btn-user"
+                                th:href="@{/search/{id}(id=${article.user.id})}">
+                                <span class="fs-5 fw-bold" th:text="${article.user.username}">user</span>
+                            </a>
+                            <span class="text-muted small">·</span>
+                            <span class="text-muted small"
+                                th:text="${#temporals.format(article.publishDate, 'dd MMM yyyy')}"></span>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center">
+                            <a href="#" onclick="goBack()" class="text-muted text-decoration-none small">← indietro</a>
+                            <a th:if="${article.category != null}"
+                                th:href="@{/categories/search/{id}(id=${article.category.id})}"
+                                class="btn-modern text-decoration-none small">esplora_ →</a>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -60,7 +75,6 @@
 
     <div th:replace="~{index :: footer}"></div>
     <script th:replace="~{index :: bootstrapScript}"></script>
-    
     <script>function goBack() { window.history.back() }</script>
 
 </body>

@@ -16,6 +16,7 @@ public class ArticleDto {
     
     private Long id;
     private String title;
+    private String subtitle;
     private String body;
     private LocalDate publishDate;
     private Boolean isAccepted;

@@ -16,7 +16,8 @@
 
             <!-- Griglia articoli -->
             <div class="row g-4" th:unless="${#lists.isEmpty(articles)}">
-                <div class="col-md-6 col-lg-4" th:each="article : ${articles}">
+                <div class="col-md-6 col-lg-4" th:each="article : ${articles}"  th:onclick="|window.location.href='@{/articles/details/{id}(id=${article.id})}'|"
+            style="cursor: pointer;">
 
                     <div class="card h-100 glass-module overflow-hidden shadow">
 
@@ -34,15 +35,14 @@
                             <div class="d-flex align-items-center mb-3">
 
                                 <div class="border-start border-4 border-success ps-2">
-                                    <p class="font-monospace text-uppercase fw-bold text-dark mb-0 lh-1"
-                                        th:text="${article.category != null ? article.category.name : 'NONE'}">CATEGORY
+                                    <p class="font-monospace text-uppercase fw-bold text-dark mb-0 lh-1" th:text="${article.category != null ? article.category.name : 'NONE'}">CATEGORY
                                     </p>
                                 </div>
 
                             </div>
 
 
-                            <h4 class="fw-bold mb-4 text-dark" style="letter-spacing: -0.8px; line-height: 1.1;"
+                            <h4 class="fw-bold mb-2 text-dark" style="letter-spacing: -0.8px; line-height: 1.1;"
                                 th:text="${article.title}">Titolo Progetto</h4>
 
 

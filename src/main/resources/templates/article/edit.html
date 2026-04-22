@@ -33,6 +33,16 @@
                                     
                                 </div>
 
+                                <!-- TITLE -->
+                                <div class="form-floating mb-3">
+
+                                    <input type="text" th:field="*{subtitle}" class="form-control rounded-3" placeholder="Sottotitolo">
+                                    <label>Sottotitolo</label>
+
+                                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('subtitle')}" th:errors="*{subtitle}"></div>
+                                    
+                                </div>
+
                                 <!-- BODY -->
                                 <div class="form-floating mb-3">
 

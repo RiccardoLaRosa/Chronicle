@@ -16,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,7 +44,7 @@ public class User {
     @Column(nullable=false)
     private String password;
 
-    @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
         name="users_roles",
         joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName="ID")},
@@ -56,6 +55,6 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Article> articles= new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
-    CareerRequest careerRequest;
+    @OneToMany(mappedBy = "user")
+    List<CareerRequest> careerRequests = new ArrayList<>();
 }

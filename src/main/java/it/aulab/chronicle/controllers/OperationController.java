@@ -63,13 +63,8 @@ public class OperationController  {
 
         User user = userService.findUserByEmail(principal.getName());
 
-        if (careerRequestService.AlreadyExist(user)) {
+        if (careerRequestService.alreadyExist(user)) {
             redirectAttributes.addFlashAttribute("errorMessage","Hai già fatto una richiesta!");
-            return "redirect:/";
-        }
-
-        if (careerRequestRepository.existsByRoleId(careerRequest.getRole().getId())) {
-             redirectAttributes.addFlashAttribute("errorMessage","Questo ruolo non può essere richiesto al momento!");
             return "redirect:/";
         }
         

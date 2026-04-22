@@ -38,9 +38,14 @@ public class Article {
     @Size(max=100)
     private String title;
 
-    @Column(nullable= false, length=1000)
+    @Column(nullable= false, length=500)
     @NotEmpty
-    @Size(max=1000)
+    @Size(max=500)
+    private String subtitle;
+
+    @Column(nullable= false, length=10000)
+    @NotEmpty
+    @Size(max=5000)
     private String body;
 
     @Column(nullable= false, length=8)

@@ -36,9 +36,9 @@
                 <!-- SINISTRA -->
                 <div class="d-flex align-items-center gap-4">
                     <a th:href="@{/}" class="nav-link-custom fw-semibold fs-6">Home</a>
-                    <a th:href="@{/articles/index}" class="nav-link-custom fw-semibold fs-6">Esplora</a>
+                    <a th:href="@{/articles/index}" class="nav-link-custom fw-semibold fs-6"><i class="bi bi-compass-fill me-1"></i>Esplora</a>
                     <a th:href="@{/articles/create}" class="btn btn-main btn-sm"
-                        sec:authorize="isAuthenticated() && hasAuthority('ROLE_WRITER')">Scrivi</a>
+                        sec:authorize="isAuthenticated() && hasAuthority('ROLE_WRITER')"><i class="bi bi-vector-pen me-1"></i>Scrivi</a>
 
                     <!-- Dashboard Admin con notifica richieste -->
                     <a th:href="@{/admin/dashboard}" sec:authorize="hasAuthority('ROLE_ADMIN')"

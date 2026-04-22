@@ -1,5 +1,6 @@
 package it.aulab.chronicle.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class CareerRequestService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public boolean AlreadyExist(User user) {
-        return careerRequestRepository.existsByUserId(user.getId());
+    public boolean alreadyExist(User user) {
+        return careerRequestRepository.existsByUserIdAndIsChecked(user.getId(), false);
     }
 
     public void save(CareerRequest careerRequest, User user) {
@@ -54,12 +55,11 @@ public class CareerRequestService {
         Role role = request.getRole();
         
         //Recupero tutti i ruoli che l'utente già possiede ed aggiungo quello nuovo
-        List<Role> roleUser = user.getRoles();
-        Role newRole = roleRepository.findByName(role.getName());
-        roleUser.add(newRole);
+        List<Role> newRoles = new ArrayList<>();
+        newRoles.add(roleRepository.findByName(role.getName()));
+        user.setRoles(newRoles);
 
         //Salvo le modifiche
-        user.setRoles(roleUser);
         userRepository.save(user);
         request.setChecked(true);
         careerRequestRepository.save(request);

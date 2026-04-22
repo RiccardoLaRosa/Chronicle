@@ -19,7 +19,7 @@ CREATE TABLE categories (
 CREATE TABLE articles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100),
-    subtitle VARCHAR(100),
+    subtitle VARCHAR(500),
     body TEXT,
     publish_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
