@@ -176,7 +176,7 @@
             const fullWidth = track.offsetWidth / 2;
             let x = 0;
             (function tick() {
-                x -= 0.6;
+                x -= 0.1;
                 if (x <= -fullWidth) x = 0;
                 track.style.transform = 'translateX(' + x + 'px)';
                 requestAnimationFrame(tick);
@@ -184,7 +184,7 @@
         });
     </script>
 
-    <!-- Animazione Categorie -->
+    <!-- Animazione Stats -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const counters = document.querySelectorAll('.stat-number');
